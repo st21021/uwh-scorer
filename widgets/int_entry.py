@@ -26,5 +26,31 @@ class IntEntry(ttk.Frame):
 
         self.var = tk.IntVar(self, "")
 
-        self.ent = ttk.Entry(self, textvariable=self.var)
+        self.validate_cmd = (self.register(self.validate), '%P')
+        self.ent = ttk.Entry(self, textvariable=self.var, validate="key",
+                             validatecommand=self.validate_cmd)
         self.ent.grid(row=1, column=0, sticky="NSWE")
+
+    def validate(self, value: str) -> bool:
+        '''Validate if the input is an integer within range.
+        Register and use as validatecommand in Entry widget
+        Returns true if empty or is an integer, otherwise false'''
+        #if value == "":
+        #    return True
+        if not value.isdigit():
+            messagebox.showerror("Number Error",
+                f"{self.text} must be an integer")
+            return False
+        elif int(value) < self.min or int(value) > self.max:
+            if self.min != minsize and self.max != maxsize:
+                messagebox.showerror("Number Error",
+                    f"{self.text} must be between {self.min} and {self.max}")
+            elif self.max == maxsize:
+                messagebox.showerror("Number Error",
+                    f"{self.text} must be {self.min} or above")
+            else:
+                messagebox.showerror("Number Error",
+                    f"{self.text} must be {self.max} or below")
+            return False
+        else:
+            return True

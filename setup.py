@@ -1,3 +1,10 @@
+'''A frame or window to setup an Underwater Hockey game.
+
+v1 - Gets the time for the game and then starts it
+
+Created by Luke Marshall
+22/07/2025'''
+
 import tkinter as tk
 from tkinter import ttk
 from custom_style import CustomStyle

@@ -13,6 +13,7 @@ class IntEntry(ttk.Frame):
         '''Create frame.'''
         super().__init__(master)
 
+        # Create attributes
         self.text = text
         self.required = required
         self.min = min
@@ -21,12 +22,13 @@ class IntEntry(ttk.Frame):
         self.rowconfigure(list(range(2)), weight=1)
         self.columnconfigure(0, weight=1)
 
+        # Create tkinter/ttk widgets
         self.lbl = ttk.Label(self, text=self.text)
         self.lbl.grid(row=0, column=0)
 
         self.var = tk.IntVar(self, "")
 
-        self.validate_cmd = (self.register(self.validate), '%P')
+        self.validate_cmd = (self.register(self.validate), '%P') # This validates the entries input
         self.ent = ttk.Entry(self, textvariable=self.var, validate="key",
                              validatecommand=self.validate_cmd)
         self.ent.grid(row=1, column=0, sticky="NSWE")
@@ -35,22 +37,26 @@ class IntEntry(ttk.Frame):
         '''Validate if the input is an integer within range.
         Register and use as validatecommand in Entry widget
         Returns true if empty or is an integer, otherwise false'''
-        #if value == "":
-        #    return True
-        if not value.isdigit():
+        if value == "" or value == "-":
+            return True
+        try: # Will raise ValueError if value is not an integer
+            if int(value) < self.min or int(value) > self.max:
+                # Show an error if value is out of range
+                if self.min != minsize and self.max != maxsize:
+                    messagebox.showerror("Number Error",
+                        f"{self.text} must be between {self.min} and {self.max}")
+                
+                # Change error message if default min or max is used
+                elif self.max == maxsize:
+                    messagebox.showerror("Number Error",
+                        f"{self.text} must be {self.min} or above")
+                else:
+                    messagebox.showerror("Number Error",
+                        f"{self.text} must be {self.max} or below")
+                return False
+            else:
+                return True
+        except ValueError:
             messagebox.showerror("Number Error",
                 f"{self.text} must be an integer")
             return False
-        elif int(value) < self.min or int(value) > self.max:
-            if self.min != minsize and self.max != maxsize:
-                messagebox.showerror("Number Error",
-                    f"{self.text} must be between {self.min} and {self.max}")
-            elif self.max == maxsize:
-                messagebox.showerror("Number Error",
-                    f"{self.text} must be {self.min} or above")
-            else:
-                messagebox.showerror("Number Error",
-                    f"{self.text} must be {self.max} or below")
-            return False
-        else:
-            return True

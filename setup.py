@@ -38,8 +38,6 @@ class SetupFrame(ttk.Frame):
         self.total_lbl = ttk.Label(self, text="Total Game Length: ")
         self.total_lbl.grid(row=2, column=0, columnspan=2, sticky="NSWE",
                             padx=self.pad, pady=self.pad)
-        
-
 
 
 if __name__ == "__main__":

@@ -26,7 +26,7 @@ class IntEntry(ttk.Frame):
         self.lbl = ttk.Label(self, text=self.text)
         self.lbl.grid(row=0, column=0)
 
-        self.var = tk.IntVar(self, "")
+        self.var = tk.StringVar(self, "")
 
         self.validate_cmd = (self.register(self.validate), '%P') # This validates the entries input
         self.ent = ttk.Entry(self, textvariable=self.var, validate="key",
@@ -60,3 +60,28 @@ class IntEntry(ttk.Frame):
             messagebox.showerror("Number Error",
                 f"{self.text} must be an integer")
             return False
+    
+    def get(self) -> int | None:
+        '''Return the integer from var, or None if invalid.'''
+        try:
+            return int(self.var.get())
+        except ValueError:
+            if self.var.get() == "" and self.required:
+                messagebox.showerror("Number Error",
+                    f"{self.text} cannot be blank")
+                return None
+            elif self.var.get() == "":
+                # Return blank string if not required
+                return ""
+            else:
+                messagebox.showerror("Number Error",
+                    f"'{self.var.get()}' is an invalid value for {self.text}")
+                return None
+    
+    def set(self, value) -> None:
+        '''Set the value of var to value.'''
+        self.var.set(value)
+    
+    def reset(self, value) -> None:
+        '''Empty the entry.'''
+        self.var.set("")

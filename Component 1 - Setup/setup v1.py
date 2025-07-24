@@ -8,7 +8,7 @@ Created by Luke Marshall
 import tkinter as tk
 from tkinter import ttk
 from custom_style import CustomStyle
-from widgets.int_entry import IntEntry
+from int_entry import IntEntry
 
 class SetupFrame(ttk.Frame):
     '''Frame to setup the underwater hockey game.
@@ -33,7 +33,7 @@ class SetupFrame(ttk.Frame):
         self.inputs["time"].grid(row=1, column=0, sticky="NSWE",
                            padx=self.pad, pady=self.pad)
         
-        self.inputs["half"] = IntEntry(self, "Half-Time", False, 1)
+        self.inputs["half"] = IntEntry(self, "Half-Time", True, 1)
         self.inputs["half"].grid(row=1, column=1, sticky="NSWE",
                            padx=self.pad, pady=self.pad)
         

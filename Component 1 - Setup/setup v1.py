@@ -15,12 +15,12 @@ class SetupFrame(ttk.Frame):
     Collects various inputs from the user, e.g. time, teams'''
 
     def __init__(self, master: tk.Tk | ttk.Frame) -> None:
-        '''Create setup frame'''
+        '''Create setup frame.'''
         super().__init__(master) # Inherit methods from ttk.Frame
 
         self.style = CustomStyle(self)
-        self.rowconfigure([0, 1], weight=1)
-        self.columnconfigure([0, 1], weight=1)
+        self.rowconfigure(list(range(4)), weight=1)
+        self.columnconfigure(list(range(2)), weight=1)
         self.pad = 5
 
         self.info_lbl = ttk.Label(self, text="Enter game length (minutes)")
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     root.rowconfigure(0, weight=1)
     root.columnconfigure(0, weight=1)
 
-    setup = SetupFrame(root)
-    setup.grid(row=0, column=0, sticky="NSWE")
+    frame = SetupFrame(root)
+    frame.grid(row=0, column=0, sticky="NSWE")
 
     root.mainloop()

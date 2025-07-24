@@ -22,6 +22,7 @@ class CustomStyle(ttk.Style):
 
         self.configure("TLabel", background=self.bg, foreground=self.fg,
                        font=self.font, anchor="center")
+        self.configure("box.TLabel")
         
         self.configure("TButton", background=self.bg, foreground=self.fg,
                        font=self.font, anchor="center")

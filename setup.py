@@ -21,7 +21,7 @@ class SetupFrame(ttk.Frame):
         self.style = CustomStyle(self)
         self.rowconfigure(list(range(4)), weight=1)
         self.columnconfigure(list(range(2)), weight=1)
-        self.pad = 5
+        self.pad = 5 # Padding between widgets
 
         self.info_lbl = ttk.Label(self, text="Enter game length (minutes)")
         self.info_lbl.grid(row=0, column=0, columnspan=2, sticky="NSWE",
@@ -51,6 +51,7 @@ class SetupFrame(ttk.Frame):
         outputs = {}
         valid = True
         for key, value in self.inputs.items():
+            # If .get() returns None, the value is invalid
             if value.get() != None:
                 outputs[key] = value.get()
             else:

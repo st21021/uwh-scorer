@@ -81,7 +81,9 @@ class IntEntry(ttk.Frame):
     def set(self, value) -> None:
         '''Set the value of var to value.'''
         self.var.set(value)
+        return None
     
     def reset(self, value) -> None:
         '''Empty the entry.'''
         self.var.set("")
+        return None

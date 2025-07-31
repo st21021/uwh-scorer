@@ -60,6 +60,7 @@ class SetupFrame(ttk.Frame):
             print(outputs)
         else:
             print("Invalid")
+        return None
 
 
 if __name__ == "__main__":

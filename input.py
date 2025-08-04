@@ -43,17 +43,17 @@ class InputFrame(ttk.Frame):
 
         self.time_left_lbl = ttk.Label(self.time_frm, text="Time Left",
                                        style="med.box.TLabel")
-        self.widget_grid(self.time_left_lbl, 0, 0, "xy")
+        self.box_grid(self.time_left_lbl, 0, 0, "xy")
 
         self.stage_var = tk.StringVar(self, "First Half")
         self.stage_lbl = ttk.Label(self.time_frm, textvariable=self.stage_var,
                                   style="box.TLabel")
-        self.widget_grid(self.stage_lbl, 1, 0, "x") 
+        self.box_grid(self.stage_lbl, 1, 0, "x") 
 
         self.time_var = tk.StringVar(self, "10:00")        
         self.time_lbl = ttk.Label(self.time_frm, textvariable=self.time_var,
                                   style="lrg.box.TLabel")
-        self.widget_grid(self.time_lbl, 2, 0, "xy")
+        self.box_grid(self.time_lbl, 2, 0, "xy")
         
         # white_frm contains White, Name and score labels
         self.white_frm = ttk.Frame(self, style="box.TFrame")
@@ -64,16 +64,16 @@ class InputFrame(ttk.Frame):
 
         self.white_lbl = ttk.Label(self.white_frm, text="White",
                                    style="med.white.box.TLabel")
-        self.widget_grid(self.white_lbl, 0, 0, "xy") 
+        self.box_grid(self.white_lbl, 0, 0, "xy") 
 
         self.w_team_lbl = ttk.Label(self.white_frm, text=self.w_team,
                                     style="white.box.TLabel")
-        self.widget_grid(self.w_team_lbl, 1, 0, "x")
+        self.box_grid(self.w_team_lbl, 1, 0, "x")
 
         self.w_score = tk.IntVar(self, 0)        
         self.w_score_lbl = ttk.Label(self.white_frm, textvariable=self.w_score,
                                      style="lrg.white.box.TLabel")
-        self.widget_grid(self.w_score_lbl, 2, 0, "xy")
+        self.box_grid(self.w_score_lbl, 2, 0, "xy")
 
         # black_frm contains Black, Name and score labels
         self.black_frm = ttk.Frame(self, style="box.TFrame")
@@ -84,16 +84,30 @@ class InputFrame(ttk.Frame):
 
         self.black_lbl = ttk.Label(self.black_frm, text="Black",
                                    style="med.black.box.TLabel")
-        self.widget_grid(self.black_lbl, 0, 0, "xy")
+        self.box_grid(self.black_lbl, 0, 0, "xy")
 
         self.b_team_lbl = ttk.Label(self.black_frm, text=self.b_team,
                                     style="black.box.TLabel")
-        self.widget_grid(self.b_team_lbl, 1, 0, "x")
+        self.box_grid(self.b_team_lbl, 1, 0, "x")
 
         self.b_score = tk.IntVar(self, 0)        
         self.b_score_lbl = ttk.Label(self.black_frm, textvariable=self.b_score,
                                      style="lrg.box.TLabel")
-        self.widget_grid(self.b_score_lbl, 2, 0, "xy")
+        self.box_grid(self.b_score_lbl, 2, 0, "xy")
+
+        # Button to add score to the white team
+        self.white_btn = ttk.Button(self, text="White Score +1",
+                                    command=lambda: self.add_score("w"),
+                                    style="white.TButton")
+        self.frame_grid(self.white_btn, 1, 0)
+        self.white_btn.grid_configure(ipadx=self.ipad, ipady=self.ipad)
+
+        # Button to add score to the black team
+        self.black_btn = ttk.Button(self, text="Black Score +1",
+                                    command=lambda: self.add_score("b"),
+                                    style="black.TButton")
+        self.frame_grid(self.black_btn, 1, 2)
+        self.black_btn.grid_configure(ipadx=self.ipad, ipady=self.ipad)
 
         # Displays the actual time of day
         self.real_frm = ttk.Frame(self, style="box.TFrame")
@@ -104,7 +118,7 @@ class InputFrame(ttk.Frame):
         self.real_time_lbl = ttk.Label(self.real_frm,
                                        textvariable=self.real_var,
                                        style="box.TLabel")
-        self.widget_grid(self.real_time_lbl, 0, 0, "xy")
+        self.box_grid(self.real_time_lbl, 0, 0, "xy")
 
         # Displays the game number, used in a tournament setting
         self.num_frm = ttk.Frame(self, style="box.TFrame")
@@ -114,7 +128,7 @@ class InputFrame(ttk.Frame):
         self.num_var = tk.StringVar(self, f"Game no. {self.game}")        
         self.num_lbl = ttk.Label(self.num_frm, textvariable=self.num_var,
                                  style="box.TLabel")
-        self.widget_grid(self.num_lbl, 0, 0, "xy")
+        self.box_grid(self.num_lbl, 0, 0, "xy")
 
         self.update()
 
@@ -189,7 +203,7 @@ class InputFrame(ttk.Frame):
                     padx=self.pad, pady=self.pad)
         return None
 
-    def widget_grid(self, widget: tk.Widget, row: int, col: int,
+    def box_grid(self, widget: tk.Widget, row: int, col: int,
                     bd: str = "n") -> None:
         '''Add a widget into it's frame with a border.
 
@@ -202,6 +216,13 @@ class InputFrame(ttk.Frame):
             widget.grid_configure(pady=self.bd)
         return None
 
+    def add_score(self, colour: str) -> None:
+        '''Add score to one of the teams'''
+        if colour == "w":
+            self.w_score.set(self.w_score.get()+1)
+        elif colour == "b":
+            self.b_score.set(self.b_score.get()+1)
+        return None
 
 
 if __name__ == "__main__":

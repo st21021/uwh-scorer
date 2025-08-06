@@ -10,7 +10,6 @@ from tkinter import ttk
 from datetime import datetime
 from datetime import timedelta
 from custom_style import CustomStyle
-from output import OutputFrame
 
 class InputFrame(ttk.Frame):
     '''Frame to run the underwater hockey game.
@@ -234,12 +233,5 @@ if __name__ == "__main__":
 
     frame = InputFrame(root)
     frame.grid(row=0, column=0, sticky="NSWE")
-
-    output_win = tk.Toplevel(root)
-    output_win.title("Output")
-    output_win.rowconfigure(0, weight=1)
-    output_win.columnconfigure(0, weight=1)
-    output = OutputFrame(output_win, frame)
-    output.grid(row=0, column=0, sticky="NSWE")
 
     root.mainloop()

@@ -33,7 +33,7 @@ class SetupFrame(ttk.Frame):
         self.inputs["time"].grid(row=1, column=0, sticky="NSWE",
                            padx=self.pad, pady=self.pad)
         
-        self.inputs["half"] = IntEntry(self, "Half-Time", False, 1)
+        self.inputs["half"] = IntEntry(self, "Half-Time", True, 1)
         self.inputs["half"].grid(row=1, column=1, sticky="NSWE",
                            padx=self.pad, pady=self.pad)
         
@@ -56,10 +56,17 @@ class SetupFrame(ttk.Frame):
                 outputs[key] = value.get()
             else:
                 valid = False
-        if valid:
-            print(outputs)
+        if hasattr(self.master, "to_input"):
+            # Will run if the setup frame was created by main
+            # Only main has the to_input method
+            if valid:
+                self.master.to_input(outputs)
         else:
-            print("Invalid")
+            # Otherwise print results
+            if valid:
+                print(outputs)
+            else:
+                print("Invalid")
         return None
 
 

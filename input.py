@@ -16,9 +16,18 @@ class InputFrame(ttk.Frame):
     '''Frame to run the underwater hockey game.
     Displays the time left, and buttons to control the score/time'''
 
-    def __init__(self, master: tk.Tk | ttk.Frame) -> None:
+    def __init__(self, master: tk.Tk | ttk.Frame, time: int = 10,
+                 half: int = 2, w_team: str = "WHITE TEAM",
+                 b_team: str = "BLACK TEAM", game: int = 1) -> None:
         '''Create input frame.'''
         super().__init__(master) # Inherit methods from ttk.Frame
+
+        self.time = time # Length of each half of the game
+        self.half = half # Length of half-time
+        self.w_team = w_team
+        self.b_team = b_team
+        self.game = game # Game number
+        self.start_time = datetime.now()
 
         self.style = CustomStyle(self)
         self.rowconfigure(list(range(3)), weight=1)
@@ -26,14 +35,6 @@ class InputFrame(ttk.Frame):
         self.pad = 5 # Padding between widgets
         self.ipad = 10 # Padding inside widgets
         self.bd = 1 # Border width of widgets
-
-        self.time = 10 # Length of each half of the game
-        self.half = 2 # Length of half-time
-        self.start_time = datetime.now()
-
-        self.w_team = "HOW SO"
-        self.b_team = "GDC SO"
-        self.game = 20
 
         # time_frm contains Time Left, stage, and actual time left labels
         self.time_frm = ttk.Frame(self, style="box.TFrame")

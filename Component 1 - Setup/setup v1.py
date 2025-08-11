@@ -3,7 +3,7 @@
 v1 - Gets the time for the game and then starts it
 
 Created by Luke Marshall
-25/07/2025'''
+25/07/25'''
 
 import tkinter as tk
 from tkinter import ttk

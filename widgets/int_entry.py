@@ -33,6 +33,9 @@ class IntEntry(ttk.Frame):
                              validatecommand=self.validate_cmd)
         self.ent.grid(row=1, column=0, sticky="NSWE")
 
+        if hasattr(self.master, "update"):
+            self.master.master.bind("<Key>", lambda event: self.master.update())
+
     def validate(self, value: str) -> bool:
         '''Validate if the input is an integer within range.
         Register and use as validatecommand in Entry widget

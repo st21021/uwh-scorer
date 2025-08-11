@@ -1,9 +1,10 @@
 '''A frame or window to setup an Underwater Hockey game.
 
 v1 - Gets the time for the game and then starts it
+v1.1 - Displays total game length correctly
 
 Created by Luke Marshall
-25/07/2025'''
+12/08/25'''
 
 import tkinter as tk
 from tkinter import ttk
@@ -37,13 +38,25 @@ class SetupFrame(ttk.Frame):
         self.inputs["half"].grid(row=1, column=1, sticky="NSWE",
                            padx=self.pad, pady=self.pad)
         
-        self.total_lbl = ttk.Label(self, text="Total Game Length: ")
+        self.total_lbl = ttk.Label(self, text="Total Game Length: N/A")
         self.total_lbl.grid(row=2, column=0, columnspan=2, sticky="NSWE",
                             padx=self.pad, pady=self.pad)
         
         self.start_btn = ttk.Button(self, text="Start Game", command=self.start)
         self.start_btn.grid(row=3, column=0, sticky="NSWE",
                             padx=self.pad, pady=self.pad)
+
+    def update(self) -> None:
+        '''Update the total game length label.'''
+        self.inputs["time"].required = False
+        self.inputs["half"].required = False
+        time = self.inputs["time"].get()
+        half = self.inputs["half"].get()
+        if time != "" and half != "":
+            total = 2*time + half
+            self.total_lbl.configure(text=f"Total Game Length: {total} min")
+        else:
+            self.total_lbl.configure(text=f"Total Game Length: N/A")
 
     def start(self) -> None:
         '''Start the underwater hockey game.

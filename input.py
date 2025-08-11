@@ -1,14 +1,17 @@
 '''A frame or window to control an underwater hockey game.
 
 v1 - Runs the game with 2 halves and 1 half-time, with scoring
+v2 - Saves the results of the game at the end
 
 Created by Luke Marshall
-05/08/25'''
+08/08/25'''
 
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from datetime import datetime
 from datetime import timedelta
+import json
 from custom_style import CustomStyle
 from output import OutputFrame
 
@@ -16,12 +19,14 @@ class InputFrame(ttk.Frame):
     '''Frame to run the underwater hockey game.
     Displays the time left, and buttons to control the score/time'''
 
-    def __init__(self, master: tk.Tk | ttk.Frame, time: int = 10,
+    def __init__(self, master: tk.Tk | ttk.Frame,
+                 save_fp: str = "results.json", time: int = 10,
                  half: int = 2, w_team: str = "WHITE TEAM",
                  b_team: str = "BLACK TEAM", game: int = 1) -> None:
         '''Create input frame.'''
         super().__init__(master) # Inherit methods from ttk.Frame
 
+        self.save_fp = save_fp # File path to save the game results to
         self.time = time # Length of each half of the game
         self.half = half # Length of half-time
         self.w_team = w_team
@@ -164,9 +169,15 @@ class InputFrame(ttk.Frame):
         # In second half
         elif seconds < 2*self.time + self.half:
             self.change_time(diff, lambda: 2*self.time + self.half)
-        
+
+        # Game over
         elif seconds == 2*self.time + self.half:
             self.change_time(diff, lambda: 2*self.time + self.half)
+            self.save()
+            #Inform user game has ended and ask to close
+            if messagebox.askyesno("Game over",
+                                   "Game has ended. Close window?"):
+                self.master.destroy()
 
         # Runs update() again in 1 second
         self.after(1000, self.update)
@@ -219,11 +230,43 @@ class InputFrame(ttk.Frame):
         return None
 
     def add_score(self, colour: str) -> None:
-        '''Add score to one of the teams'''
+        '''Add score to one of the teams.'''
         if colour == "w":
             self.w_score.set(self.w_score.get()+1)
         elif colour == "b":
             self.b_score.set(self.b_score.get()+1)
+        return None
+
+    def save(self) -> None:
+        '''Save the game scores to a json file.'''
+        try:
+            with open(self.save_fp, "r") as f:
+                results = json.load(f)
+        except FileNotFoundError:
+            with open(self.save_fp, "x") as f:
+                results = {"save_error": []}
+        except json.decoder.JSONDecodeError:
+            results = {"save_error": []}
+        if str(self.game) in results.keys():
+            messagebox.showerror("Save Error",
+                                 f"Could not save, results for game no. {self.game} already exists")
+            results["save_error"].append({
+                "w_team": self.w_team,
+                "b_team": self.b_team,
+                "w_score": self.w_score.get(),
+                "b_score": self.b_score.get(),
+                "start_time": self.start_time.strftime("%H:%M:%S")
+            })
+        else:
+            results[self.game] = {
+                "w_team": self.w_team,
+                "b_team": self.b_team,
+                "w_score": self.w_score.get(),
+                "b_score": self.b_score.get(),
+                "start_time": self.start_time.strftime("%H:%M:%S")
+            }
+        with open(self.save_fp, "w") as f:
+            json.dump(results, f, indent=4)
         return None
 
 
@@ -233,14 +276,15 @@ if __name__ == "__main__":
     root.rowconfigure(0, weight=1)
     root.columnconfigure(0, weight=1)
 
-    frame = InputFrame(root)
+    frame = InputFrame(root, "results.json", 3, 1, "HOW SO", "GDC SO", 21)
     frame.grid(row=0, column=0, sticky="NSWE")
 
     output_win = tk.Toplevel(root)
     output_win.title("Output")
     output_win.rowconfigure(0, weight=1)
     output_win.columnconfigure(0, weight=1)
-    output = OutputFrame(output_win, frame)
+    output = OutputFrame(output_win, frame, frame.w_team, frame.b_team,
+                         frame.game)
     output.grid(row=0, column=0, sticky="NSWE")
 
     root.mainloop()

@@ -5,9 +5,10 @@ Runs the game with an input window to control the score,
 and an output window to view the scores and times
 
 v1 - Uses setup info to run input and output
+v2 - Saves game results after the game
 
 Created by Luke Marshall
-06/08/25'''
+08/08/25'''
 
 import tkinter as tk
 from setup import SetupFrame
@@ -33,7 +34,7 @@ class Main(tk.Tk):
     def to_input(self, outputs: dict) -> None:
         '''Close setup frame and open input frame and output window.'''
         self.frame.destroy()
-        self.frame = InputFrame(self, **outputs)
+        self.frame = InputFrame(self, "results.json", **outputs)
         self.frame.grid(row=0, column=0, sticky="NSWE")
         self.title("Input")
 
@@ -42,7 +43,9 @@ class Main(tk.Tk):
         self.output_win.rowconfigure(0, weight=1)
         self.output_win.columnconfigure(0, weight=1)
         self.output_win.geometry("+0+350")
-        self.output = OutputFrame(self.output_win, self.frame)
+        self.output = OutputFrame(self.output_win, self.frame,
+                                  self.frame.w_team, self.frame.b_team,
+                                  self.frame.game)
         self.output.grid(row=0, column=0, sticky="NSWE")
 
 Main()

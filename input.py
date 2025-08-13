@@ -2,9 +2,10 @@
 
 v1 - Runs the game with 2 halves and 1 half-time, with scoring
 v2 - Saves the results of the game at the end
+v2.1 - Adds confirmation message for goals during half-time
 
 Created by Luke Marshall
-08/08/25'''
+13/08/25'''
 
 import tkinter as tk
 from tkinter import ttk
@@ -231,10 +232,19 @@ class InputFrame(ttk.Frame):
 
     def add_score(self, colour: str) -> None:
         '''Add score to one of the teams.'''
-        if colour == "w":
-            self.w_score.set(self.w_score.get()+1)
-        elif colour == "b":
-            self.b_score.set(self.b_score.get()+1)
+        add = True # Will be set to false if user has made a mistake
+        if self.stage_var.get() == "Half-Time":
+            add = messagebox.askyesno("Add Score",
+                                      "It is half-time. Add score anyway?")
+        elif self.stage_var.get() == "Timeout":
+            add = messagebox.askyesno("Add Score",
+                                      "Game is on a timeout. Add score anyway?")
+            
+        if add:
+            if colour == "w":
+                self.w_score.set(self.w_score.get()+1)
+            elif colour == "b":
+                self.b_score.set(self.b_score.get()+1)
         return None
 
     def save(self) -> None:
@@ -276,7 +286,7 @@ if __name__ == "__main__":
     root.rowconfigure(0, weight=1)
     root.columnconfigure(0, weight=1)
 
-    frame = InputFrame(root, "results.json", 3, 1, "HOW SO", "GDC SO", 21)
+    frame = InputFrame(root, "results.json", 5, 10, "HOW SO", "GDC SO", 21)
     frame.grid(row=0, column=0, sticky="NSWE")
 
     output_win = tk.Toplevel(root)

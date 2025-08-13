@@ -24,7 +24,8 @@ class SetupFrame(ttk.Frame):
         self.columnconfigure(list(range(2)), weight=1)
         self.pad = 5 # Padding between widgets
 
-        self.info_lbl = ttk.Label(self, text="Enter game length (minutes)")
+        self.info_lbl = ttk.Label(self, text="Enter game length (minutes)",
+                                  anchor="w")
         self.info_lbl.grid(row=0, column=0, columnspan=2, sticky="NSWE",
                            padx=self.pad, pady=self.pad)
         
@@ -38,7 +39,8 @@ class SetupFrame(ttk.Frame):
         self.inputs["half"].grid(row=1, column=1, sticky="NSWE",
                            padx=self.pad, pady=self.pad)
         
-        self.total_lbl = ttk.Label(self, text="Total Game Length: N/A")
+        self.total_lbl = ttk.Label(self, text="Total Game Length: N/A",
+                                   anchor="w")
         self.total_lbl.grid(row=2, column=0, columnspan=2, sticky="NSWE",
                             padx=self.pad, pady=self.pad)
         

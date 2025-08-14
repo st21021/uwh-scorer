@@ -90,3 +90,15 @@ class IntEntry(ttk.Frame):
         '''Empty the entry.'''
         self.var.set("")
         return None
+
+    def disable(self) -> None:
+        '''Disables input from the entry.'''
+        self.ent.configure(state="disabled")
+        self.lbl.configure(style="disabled.TLabel")
+        return None
+
+    def enable(self) -> None:
+        '''Reenables input from the entry.'''
+        self.ent.configure(state="normal")
+        self.lbl.configure(style="TLabel")
+        return None

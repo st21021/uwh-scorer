@@ -19,6 +19,8 @@ class CustomStyle(ttk.Style):
 
         self.black_bg = "#000000" # Background for black team
         self.black_fg = "#ffffff" # Text colour for black team
+
+        self.disabled_fg = "#666666"
         
         self.bd = "#000000" # Border colour
 
@@ -45,6 +47,7 @@ class CustomStyle(ttk.Style):
 
         self.configure("TLabel", background=self.bg, foreground=self.fg,
                        font=self.font, anchor="center")
+        self.configure("disabled.TLabel", foreground=self.disabled_fg)
         self.configure("box.TLabel", background=self.default_box_bg,
                        foreground=self.default_box_fg)
         self.configure("white.box.TLabel", background=self.white_bg,
@@ -58,8 +61,6 @@ class CustomStyle(ttk.Style):
         self.configure("lrg.white.box.TLabel", font=self.lrg_font)
         self.configure("med.black.box.TLabel", font=self.med_font)
         self.configure("lrg.black.box.TLabel", font=self.lrg_font)
-
-
         
         self.configure("TButton", background=self.bg, foreground=self.fg,
                        font=self.font, anchor="center")
@@ -92,6 +93,23 @@ class CustomStyle(ttk.Style):
             ],
             foreground=[
                 ("active", self.b_fg_active)
+            ]
+        )
+
+
+        self.configure("TRadiobutton", background=self.bg, foreground=self.fg,
+                       font=self.font)
+        self.map(
+            "TRadiobutton",
+            background=[
+                ("active", self.bg_active)
+            ],
+            foreground=[
+                ("active", self.fg_active)
+            ],
+            indicatorcolor=[
+                ("pressed", self.bg_active),
+                ("selected", self.bg_active)
             ]
         )
         return None

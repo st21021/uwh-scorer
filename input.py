@@ -22,8 +22,9 @@ class InputFrame(ttk.Frame):
 
     def __init__(self, master: tk.Tk | ttk.Frame,
                  save_fp: str = "results.json", time: int = 10,
-                 half: int = 2, w_team: str = "WHITE TEAM",
-                 b_team: str = "BLACK TEAM", game: int = 1) -> None:
+                 half: int = 2, overtime: str = "No Overtime",
+                 w_team: str = "WHITE TEAM", b_team: str = "BLACK TEAM",
+                 game: int = 1) -> None:
         '''Create input frame.'''
         super().__init__(master) # Inherit methods from ttk.Frame
 

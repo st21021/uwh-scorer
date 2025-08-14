@@ -11,9 +11,9 @@ Created by Luke Marshall
 import tkinter as tk
 from tkinter import ttk
 from custom_style import CustomStyle
-from widgets.int_entry import IntEntry
-from widgets.radio_buttons import RadioButtons
-from widgets.str_entry import StrEntry
+from int_entry import IntEntry
+from radio_buttons import RadioButtons
+from str_entry import StrEntry
 
 class SetupFrame(ttk.Frame):
     '''Frame to setup the underwater hockey game.

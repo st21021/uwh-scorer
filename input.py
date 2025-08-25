@@ -1,4 +1,4 @@
-'''A frame or window to control an underwater hockey game.
+"""A frame or window to control an underwater hockey game.
 
 v1 - Runs the game with 2 halves and 1 half-time, with scoring
 v2 - Saves the results of the game at the end
@@ -6,7 +6,8 @@ v2.1 - Adds confirmation message for goals during half-time
 v3 - Overhauled time logic, added overtime procedures for ties
 
 Created by Luke Marshall
-21/08/25'''
+21/08/25
+"""
 
 import tkinter as tk
 from tkinter import ttk
@@ -17,39 +18,43 @@ import json
 from custom_style import CustomStyle
 from output import OutputFrame
 
+
 class InputFrame(ttk.Frame):
-    '''Frame to run the underwater hockey game.
-    Displays the time left, and buttons to control the score/time'''
+    """Frame to run the underwater hockey game.
+
+    Displays the time left, and buttons to control the score/time
+    """
 
     def __init__(self, master: tk.Tk | ttk.Frame,
                  save_fp: str = "results.json", time: int = 10,
                  half: int = 2, overtime: str = "No Overtime",
-                 OT_time: int = 0, OT_break: int = 0,
+                 ot_time: int = 0, ot_break: int = 0,
                  w_team: str = "WHITE TEAM", b_team: str = "BLACK TEAM",
                  game: int = 1) -> None:
-        '''Create input frame.
+        """Create input frame.
+
         master: tkinter window or frame to place input frame in
         save_fp: json file path to save game results to
         time: length of each half of the game
         half: length of half-time
-        overtime: overtime procedure - "No Overtime", "Extra Time" or "Golden Goal"
-        OT_time: length of each half of overtime
-        OT_break: time between overtime halves
+        overtime: "No Overtime", "Extra Time" or "Golden Goal"
+        ot_time: length of each half of overtime
+        ot_break: time between overtime halves
         w_team: abbreviated white team name
         b_team: abbreviated black team name
-        game: game number (doesn't matter in this context but useful later)'''
+        game: game number (doesn't matter in this context but useful later)
+        """
+        super().__init__(master)  # Inherit methods from ttk.Frame
 
-        super().__init__(master) # Inherit methods from ttk.Frame
-
-        self.save_fp = save_fp # Json file path to save the game results to
-        self.time = time # Length of each half of the game
-        self.half = half # Length of half-time
-        self.overtime = overtime # Overtime procedure when game ends in a tie
-        self.OT_time = OT_time # Length of each half of overtime
-        self.OT_break = OT_break # Time between overtime halves
+        self.save_fp = save_fp  # Json file path to save the game results to
+        self.time = time  # Length of each half of the game
+        self.half = half  # Length of half-time
+        self.overtime = overtime  # Overtime procedure when game ends in a tie
+        self.ot_time = ot_time  # Length of each half of overtime
+        self.ot_break = ot_break  # Time between overtime halves
         self.w_team = w_team
         self.b_team = b_team
-        self.game = game # Game number
+        self.game = game  # Game number
         self.start_time = datetime.now()
         self.time_to_remove = 0
         self.time_to_get_to = self.time
@@ -57,9 +62,9 @@ class InputFrame(ttk.Frame):
         self.style = CustomStyle(self)
         self.rowconfigure(list(range(3)), weight=1)
         self.columnconfigure(list(range(3)), weight=1)
-        self.pad = 5 # Padding between widgets
-        self.ipad = 10 # Padding inside widgets
-        self.bd = 1 # Border width of widgets
+        self.pad = 5  # Padding between widgets
+        self.ipad = 10  # Padding inside widgets
+        self.bd = 1  # Border width of widgets
 
         # time_frm contains 'Time Left', stage, and actual time left labels
         self.time_frm = ttk.Frame(self, style="box.TFrame")
@@ -74,10 +79,10 @@ class InputFrame(ttk.Frame):
 
         self.stage_var = tk.StringVar(self, "First Half")
         self.stage_lbl = ttk.Label(self.time_frm, textvariable=self.stage_var,
-                                  style="box.TLabel")
-        self.box_grid(self.stage_lbl, 1, 0, "x") 
+                                   style="box.TLabel")
+        self.box_grid(self.stage_lbl, 1, 0, "x")
 
-        self.time_var = tk.StringVar(self, "10:00")        
+        self.time_var = tk.StringVar(self, "10:00")
         self.time_lbl = ttk.Label(self.time_frm, textvariable=self.time_var,
                                   style="lrg.box.TLabel")
         self.box_grid(self.time_lbl, 2, 0, "xy")
@@ -91,13 +96,13 @@ class InputFrame(ttk.Frame):
 
         self.white_lbl = ttk.Label(self.white_frm, text="White",
                                    style="med.white.box.TLabel")
-        self.box_grid(self.white_lbl, 0, 0, "xy") 
+        self.box_grid(self.white_lbl, 0, 0, "xy")
 
         self.w_team_lbl = ttk.Label(self.white_frm, text=self.w_team,
                                     style="white.box.TLabel")
         self.box_grid(self.w_team_lbl, 1, 0, "x")
 
-        self.w_score = tk.IntVar(self, 0)        
+        self.w_score = tk.IntVar(self, 0)
         self.w_score_lbl = ttk.Label(self.white_frm, textvariable=self.w_score,
                                      style="lrg.white.box.TLabel")
         self.box_grid(self.w_score_lbl, 2, 0, "xy")
@@ -117,7 +122,7 @@ class InputFrame(ttk.Frame):
                                     style="black.box.TLabel")
         self.box_grid(self.b_team_lbl, 1, 0, "x")
 
-        self.b_score = tk.IntVar(self, 0)        
+        self.b_score = tk.IntVar(self, 0)
         self.b_score_lbl = ttk.Label(self.black_frm, textvariable=self.b_score,
                                      style="lrg.box.TLabel")
         self.box_grid(self.b_score_lbl, 2, 0, "xy")
@@ -141,7 +146,7 @@ class InputFrame(ttk.Frame):
         self.real_frm.rowconfigure(0, weight=1)
         self.real_frm.columnconfigure(0, weight=1)
         self.frame_grid(self.real_frm, 2, 0)
-        self.real_var = tk.StringVar(self, "")        
+        self.real_var = tk.StringVar(self, "")
         self.real_time_lbl = ttk.Label(self.real_frm,
                                        textvariable=self.real_var,
                                        style="box.TLabel")
@@ -153,7 +158,7 @@ class InputFrame(ttk.Frame):
         self.num_frm.rowconfigure(0, weight=1)
         self.num_frm.columnconfigure(0, weight=1)
         self.frame_grid(self.num_frm, 2, 2)
-        self.num_var = tk.StringVar(self, f"Game no. {self.game}")        
+        self.num_var = tk.StringVar(self, f"Game no. {self.game}")
         self.num_lbl = ttk.Label(self.num_frm, textvariable=self.num_var,
                                  style="box.TLabel")
         self.box_grid(self.num_lbl, 0, 0, "xy")
@@ -162,7 +167,7 @@ class InputFrame(ttk.Frame):
         self.update()
 
     def update(self) -> None:
-        '''Updates the time of the window.'''
+        """Updates the time of the window."""
         self.now = datetime.now()
         self.real_var.set(self.now.strftime("%H:%M:%S"))
 
@@ -180,7 +185,7 @@ class InputFrame(ttk.Frame):
             # Set time to difference between end of half/break and now
             # Counts down
             self.change_time(self.time_to_get_to-seconds)
-        
+
         elif seconds == self.time_to_get_to:
             # When the end of a break/half is reached, change the stage
             match self.stage_var.get():
@@ -193,14 +198,15 @@ class InputFrame(ttk.Frame):
                     self.time_to_remove += self.half
                     self.time_to_get_to = self.time
                 case "Second Half":
-                    if self.w_score.get() != self.b_score.get() or self.overtime == "No Overtime":
+                    if (self.w_score.get() != self.b_score.get() or
+                            self.overtime == "No Overtime"):
                         # If game is not tied, or overtime is not needed
                         self.save()
-                        #Inform user game has ended and ask to close
+                        # Inform user game has ended and ask to close
                         if messagebox.askyesno("Game over",
-                                            "Game has ended. Close window?"):
+                                               "Game over. Close window?"):
                             self.master.destroy()
-                    
+
                     # Otherwise overtime procedures are used
                     elif self.overtime == "Golden Goal":
                         self.change_stage("Golden Goal", "Timeout")
@@ -209,31 +215,31 @@ class InputFrame(ttk.Frame):
                     elif self.overtime == "Extra Time":
                         self.change_stage("Extra Time Break", "Timeout")
                         self.time_to_remove += self.time
-                        self.time_to_get_to = self.OT_break
+                        self.time_to_get_to = self.ot_break
                 case "Extra Time Break":
                     self.change_stage("Extra Time 1st Half", "Timeout")
-                    self.time_to_remove += self.OT_break
-                    self.time_to_get_to = self.OT_time
+                    self.time_to_remove += self.ot_break
+                    self.time_to_get_to = self.ot_time
                 case "Extra Time 1st Half":
                     self.change_stage("Extra Half-Time", "Timeout")
-                    self.time_to_remove += self.OT_time
-                    self.time_to_get_to = self.OT_break
+                    self.time_to_remove += self.ot_time
+                    self.time_to_get_to = self.ot_break
                 case "Extra Half-Time":
                     self.change_stage("Extra Time 2nd Half", "Timeout")
-                    self.time_to_remove += self.OT_break
-                    self.time_to_get_to = self.OT_time
+                    self.time_to_remove += self.ot_break
+                    self.time_to_get_to = self.ot_time
                 case "Extra Time 2nd Half":
                     if self.w_score.get() != self.b_score.get():
                         # If game is not tied
                         self.save()
-                        #Inform user game has ended and ask to close
+                        # Inform user game has ended and ask to close
                         if messagebox.askyesno("Game over",
-                                            "Game has ended. Close window?"):
+                                               "Game over. Close window?"):
                             self.master.destroy()
                     else:
                         # If still a tie, go into golden goal
                         self.change_stage("Golden Goal", "Timeout")
-                        self.time_to_remove += self.OT_time
+                        self.time_to_remove += self.ot_time
                         self.time_to_get_to = 0
             seconds = diff.seconds - self.time_to_remove
             self.change_time(self.time_to_get_to-seconds)
@@ -243,14 +249,16 @@ class InputFrame(ttk.Frame):
         return None
 
     def change_time(self, seconds: int) -> None:
-        '''Change the time label.'''
+        """Change the time label."""
         minutes, seconds = divmod(seconds, 60)
         self.time_var.set(f"{minutes:02}:{seconds:02}")
         return None
 
     def change_stage(self, stage: str, stage_type: str) -> None:
-        '''Change the stage label and background colour.
-        stage_type: "Normal", "Break" or "Timeout"'''
+        """Change the stage label and background colour.
+
+        stage_type: 'Normal', 'Break' or 'Timeout'
+        """
         if stage_type == "Timeout":
             # Change background colour to red, and store actual stage
             self.style.bg = "#ff0000"
@@ -266,22 +274,23 @@ class InputFrame(ttk.Frame):
             # Change background colour to normal
             self.style.bg = "#dddddd"
             self.style.config()
-        
+
         # Change label
         self.stage_var.set(stage)
         return None
 
     def frame_grid(self, widget: ttk.Frame, row: int, column: int) -> None:
-        '''Add a frame into the grid.'''
+        """Add a frame into the grid."""
         widget.grid(row=row, column=column, sticky="NSWE",
                     padx=self.pad, pady=self.pad)
         return None
 
     def box_grid(self, widget: tk.Widget, row: int, col: int,
-                    bd: str = "n") -> None:
-        '''Add a widget into it's frame with a border.
+                 bd: str = "n") -> None:
+        """Add a widget into it's frame with a border.
 
-        bd: Use "x" for left/right, "y" for top/bottom, "xy" for both'''
+        bd: Use 'x' for left/right, 'y' for top/bottom, 'xy' for both
+        """
         widget.grid(row=row, column=col, sticky="NSWE",
                     padx=0, pady=0, ipadx=self.ipad, ipady=self.ipad)
         if "x" in bd.lower():
@@ -291,18 +300,20 @@ class InputFrame(ttk.Frame):
         return None
 
     def add_score(self, colour: str) -> None:
-        '''Add score to one of the teams.
-        colour: "w" or "b"'''
-        add = True # Will be set to false if user has made a mistake
+        """Add score to one of the teams.
+
+        colour: 'w' or 'b'
+        """
+        add = True  # Will be set to false if user has made a mistake
         if (self.stage_var.get() == "Half-Time" or
-            self.stage_var.get() == "Extra Half-Time" or
-            self.stage_var.get() == "Extra Time Break"):
-            add = messagebox.askyesno("Add Score",
-                                      "It is half-time. Add score anyway?")
+                self.stage_var.get() == "Extra Half-Time" or
+                self.stage_var.get() == "Extra Time Break"):
+            m = "It is half-time. Add score anyway?"
+            add = messagebox.askyesno("Add Score", m)
         elif self.stage_var.get() == "Timeout":
-            add = messagebox.askyesno("Add Score",
-                                      "Game is on a timeout. Add score anyway?")
-            
+            m = "Game is on a timeout. Add score anyway?"
+            add = messagebox.askyesno("Add Score", m)
+
         if add:
             if colour == "w":
                 self.w_score.set(self.w_score.get()+1)
@@ -317,8 +328,8 @@ class InputFrame(ttk.Frame):
         return None
 
     def save(self) -> None:
-        '''Save the game scores to a json file.'''
-        self.after_cancel(self.update_command) # Stops time from updating
+        """Save the game scores to a json file."""
+        self.after_cancel(self.update_command)  # Stops time from updating
         try:
             # Open json file to read
             with open(self.save_fp, "r") as f:
@@ -333,8 +344,8 @@ class InputFrame(ttk.Frame):
 
         if str(self.game) in results.keys():
             # Add game results to save_error list in dictionary
-            messagebox.showerror("Save Error",
-                                 f"Could not save, results for game no. {self.game} already exists")
+            m = f"Could not save, results for game no. {self.game} already exists"
+            messagebox.showerror("Save Error", m)
             results["save_error"].append({
                 "w_team": self.w_team,
                 "b_team": self.b_team,
@@ -364,7 +375,7 @@ if __name__ == "__main__":
     root.rowconfigure(0, weight=1)
     root.columnconfigure(0, weight=1)
 
-    frame = InputFrame(root, "results.json", 5, 1, "Extra Time", 5, 1, "HOW SO", "GDC SO", 21)
+    frame = InputFrame(root, "results.json", 10, 2)
     frame.grid(row=0, column=0, sticky="NSWE")
 
     output_win = tk.Toplevel(root)

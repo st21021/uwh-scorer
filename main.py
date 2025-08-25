@@ -1,4 +1,4 @@
-'''Program to run an underwater hockey game.
+"""Program to run an underwater hockey game.
 
 Opens a setup window to control the game specifications
 Runs the game with an input window to control the score,
@@ -8,15 +8,17 @@ v1 - Uses setup info to run input and output
 v2 - Saves game results after the game
 
 Created by Luke Marshall
-08/08/25'''
+08/08/25
+"""
 
 import tkinter as tk
 from setup import SetupFrame
 from input import InputFrame
 from output import OutputFrame
 
+
 class Main(tk.Tk):
-    '''Runs the underwater hockey game.'''
+    """Runs the underwater hockey game."""
 
     def __init__(self):
         super().__init__()
@@ -32,7 +34,7 @@ class Main(tk.Tk):
         self.mainloop()
 
     def to_input(self, outputs: dict) -> None:
-        '''Close setup frame and open input frame and output window.'''
+        """Close setup frame and open input frame and output window."""
         self.frame.destroy()
         self.frame = InputFrame(self, "results.json", **outputs)
         self.frame.grid(row=0, column=0, sticky="NSWE")
@@ -47,5 +49,6 @@ class Main(tk.Tk):
                                   self.frame.w_team, self.frame.b_team,
                                   self.frame.game)
         self.output.grid(row=0, column=0, sticky="NSWE")
+
 
 Main()

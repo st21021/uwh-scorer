@@ -2,12 +2,13 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
+
 class StrEntry(ttk.Frame):
-    '''Frame to get string entry.'''
+    """Frame to get string entry."""
 
     def __init__(self, master: tk.Tk | ttk.Frame, text: str,
                  required: bool = False) -> None:
-        '''Create frame.'''
+        """Create frame."""
         super().__init__(master)
 
         # Create attributes
@@ -25,22 +26,21 @@ class StrEntry(ttk.Frame):
 
         self.ent = ttk.Entry(self, textvariable=self.var)
         self.ent.grid(row=1, column=0, sticky="NSWE")
-    
+
     def get(self) -> int | None:
-        '''Return the integer from var, or None if invalid.'''
+        """Return the integer from var, or None if invalid."""
         if self.var.get() == "" and self.required:
-            messagebox.showerror("Input Error",
-                f"{self.text} cannot be blank")
+            messagebox.showerror("Input Error", f"{self.text} cannot be blank")
             return None
         else:
             return self.var.get()
-    
+
     def set(self, value) -> None:
-        '''Set the value of var to value.'''
+        """Set the value of var to value."""
         self.var.set(value)
         return None
-    
+
     def reset(self) -> None:
-        '''Empty the entry.'''
+        """Empty the entry."""
         self.var.set("")
         return None

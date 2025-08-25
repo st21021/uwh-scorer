@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
+
 class CustomStyle(ttk.Style):
     '''A Style object that customizes the style of ttk widgets.'''
 
@@ -8,21 +9,21 @@ class CustomStyle(ttk.Style):
         '''Create custom style instance.'''
         super().__init__(master)
 
-        self.bg = "#dddddd" # Background colour
-        self.fg = "#000000" # Normal text colour
+        self.bg = "#dddddd"  # Background colour
+        self.fg = "#000000"  # Normal text colour
 
-        self.default_box_bg = "#ffffff" # Background of boxes
-        self.default_box_fg = "#000000" # Text colour in boxes
-        
-        self.white_bg = "#ffffff" # Background for white team
-        self.white_fg = "#000000" # Text colour for white team
+        self.default_box_bg = "#ffffff"  # Background of boxes
+        self.default_box_fg = "#000000"  # Text colour in boxes
 
-        self.black_bg = "#000000" # Background for black team
-        self.black_fg = "#ffffff" # Text colour for black team
+        self.white_bg = "#ffffff"  # Background for white team
+        self.white_fg = "#000000"  # Text colour for white team
+
+        self.black_bg = "#000000"  # Background for black team
+        self.black_fg = "#ffffff"  # Text colour for black team
 
         self.disabled_fg = "#666666"
-        
-        self.bd = "#000000" # Border colour
+
+        self.bd = "#000000"  # Border colour
 
         self.font = ("Arial", 12)
         self.med_font = ("Arial", 24)
@@ -39,7 +40,7 @@ class CustomStyle(ttk.Style):
         self.theme_use('alt')
 
         self.config()
-    
+
     def config(self) -> None:
         '''Configure the style options.'''
         self.configure("TFrame", background=self.bg)
@@ -61,7 +62,7 @@ class CustomStyle(ttk.Style):
         self.configure("lrg.white.box.TLabel", font=self.lrg_font)
         self.configure("med.black.box.TLabel", font=self.med_font)
         self.configure("lrg.black.box.TLabel", font=self.lrg_font)
-        
+
         self.configure("TButton", background=self.bg, foreground=self.fg,
                        font=self.font, anchor="center")
         self.configure("white.TButton", background=self.white_bg,
@@ -95,7 +96,6 @@ class CustomStyle(ttk.Style):
                 ("active", self.b_fg_active)
             ]
         )
-
 
         self.configure("TRadiobutton", background=self.bg, foreground=self.fg,
                        font=self.font)
